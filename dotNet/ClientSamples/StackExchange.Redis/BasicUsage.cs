@@ -4,9 +4,11 @@ using StackExchange.Redis;
 
 namespace DotNet.ClientSamples.StackExchange.Redis
 {
-    class ForceReconnectSample
+    class BasicUsage
     {
-        public static void ForceReconnect()
+        private static IDatabase redis => ConnectionHelper.Connection.GetDatabase();
+
+        public static void Sample()
         {
             InitLogger();
             ConnectionHelper.Initialize();
@@ -14,8 +16,8 @@ namespace DotNet.ClientSamples.StackExchange.Redis
             var value = "value";
             try
             {
-                ConnectionHelper.Connection.GetDatabase().KeyDelete(key);
-                ConnectionHelper.Connection.GetDatabase().StringSet(key, value);
+                redis.KeyDelete(key);
+                redis.StringSet(key, value);
                 var newValue = ConnectionHelper.Connection.GetDatabase().StringGet(key);
 
                 Console.WriteLine("new value is {0}, expected value is {1}", newValue, value);
